@@ -34,7 +34,6 @@ class RoundImageView @JvmOverloads constructor(
 
     private val imageView: AppCompatImageView = AppCompatImageView(context, attrs, defStyleAttr)
     private val roundBorder= UiLinearLayout(context,attrs, defStyleAttr)
-
     private var cornerRadius: Float = 0f
     private var stWidth: Float = 0f
     private var stColorDark: Int = Color.BLACK
