@@ -117,6 +117,16 @@ class UiConstraintLayout @JvmOverloads constructor(
         setWillNotDraw(false)
 
     }
+    fun setGradientStroke(intArray: IntArray){
+        this.strokeGradient = intArray
+        postInvalidate()
+        requestLayout()
+    }
+    fun setGradientStrokeOrientation(intArray: GradientOrientation){
+        strokeGradientOrientation=intArray
+        postInvalidate()
+        requestLayout()
+    }
 
     private fun updateGradient() {
         val backgroundDrawable = GradientDrawable(

@@ -33,7 +33,7 @@ class RoundImageView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val imageView: AppCompatImageView = AppCompatImageView(context, attrs, defStyleAttr)
-
+    private val roundBorder= UiLinearLayout(context,attrs, defStyleAttr)
     private var cornerRadius: Float = 0f
     private var stWidth: Float = 0f
     private var stColorDark: Int = Color.BLACK
@@ -153,49 +153,12 @@ class RoundImageView @JvmOverloads constructor(
             addView(imageView)
             setClipContent(true)
             setWillNotDraw(false)
-        }
-    }
+            roundBorder.setBgColor(transparent, transparent)
+            roundBorder.setStrokeWidth(stWidth.toInt())
+            roundBorder.setCornerRadius(radius = cornerRadius)
+            roundBorder.setGradientStroke(strokeGradient)
+            addView(roundBorder)
 
-    override fun dispatchDraw(canvas: Canvas) {
-        super.dispatchDraw(canvas)
-        if (stWidth > 0) {
-            val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                style = Paint.Style.STROKE
-                strokeWidth = this@RoundImageView.stWidth
-            }
-            if (strokeGradient != null) {
-                if (strokeGradient!!.size > 1) {
-                    val (x0, y0, x1, y1) = when (strokeGradientOrientation) {
-                        GradientOrientation.TOP_TO_BOTTOM -> arrayOf(0f, 0f, 0f, height)
-                        GradientOrientation.BOTTOM_TO_TOP -> arrayOf(0f, height, 0f, 0f)
-                        GradientOrientation.LEFT_TO_RIGHT -> arrayOf(0f, 0f, width, 0f)
-                        GradientOrientation.RIGHT_TO_LEFT -> arrayOf(width, 0f, 0f, 0f)
-                        GradientOrientation.TL_BR -> arrayOf(0f, 0f, width, height)
-                        GradientOrientation.TR_BL -> arrayOf(width, 0f, 0f, height)
-                        GradientOrientation.BL_TR -> arrayOf(0f, height, width, 0f)
-                        GradientOrientation.BR_TL -> arrayOf(width, height, 0f, 0f)
-                    }
-
-                    val gradient = LinearGradient(
-                        x0.toFloat(), y0.toFloat(), x1.toFloat(), y1.toFloat(),
-                        strokeGradient!!,
-                        null,
-                        Shader.TileMode.CLAMP
-                    )
-                    paint.shader = gradient
-                } else {
-                    paint.color = if (isDarkMode) stColorDark else stColorLight
-                }
-            } else {
-                paint.color = if (isDarkMode) stColorDark else stColorLight
-            }
-            val rectF = RectF(
-                this@RoundImageView.stWidth / 2,
-                this@RoundImageView.stWidth / 2,
-                width.toFloat() - this@RoundImageView.stWidth / 2,
-                height.toFloat() - this@RoundImageView.stWidth / 2
-            )
-            canvas.drawRoundRect(rectF, cornerRadius*.825f, cornerRadius*.825f, paint)
         }
     }
 
