@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BaseDialog" parent="android:Theme.Holo.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Material3.DayNight.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <declare-styleable name="SVGImageView">
+        <attr name="svg" format="reference|string" />
+        <attr name="css" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="StyleView">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="stColorDark" format="color|reference" />
+        <attr name="stColorLight" format="color|reference" />
+        <attr name="bgColorDark" format="color|reference" />
+        <attr name="bgColorLight" format="color|reference" />
+        <attr name="bgGradientStart" format="color|reference" />
+        <attr name="bgGradientCenter" format="color|reference" />
+        <attr name="bgGradientEnd" format="color|reference" />
+        <attr name="clipContent" format="boolean" />
+        <attr name="strokeGradient" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="ri_src" format="integer" />
+        <attr name="android:adjustViewBounds" format="boolean"/>
+        <attr name="ri_scaleType">
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="Orientation">
+        <attr name="textGdOrientation" format="enum">
+            <enum name="top_bottom" value="0" />
+            <enum name="tr_bl" value="1" />
+            <enum name="right_left" value="2" />
+            <enum name="br_tl" value="3" />
+            <enum name="bottom_top" value="4" />
+            <enum name="bl_tr" value="5" />
+            <enum name="left_right" value="6" />
+            <enum name="tl_br" value="7" />
+        </attr>
+        <attr name="bgGdOrientation" format="enum">
+            <enum name="top_bottom" value="0" />
+            <enum name="tr_bl" value="1" />
+            <enum name="right_left" value="2" />
+            <enum name="br_tl" value="3" />
+            <enum name="bottom_top" value="4" />
+            <enum name="bl_tr" value="5" />
+            <enum name="left_right" value="6" />
+            <enum name="tl_br" value="7" />
+        </attr>
+        <attr name="strokeGdOrientation" format="enum">
+            <enum name="top_bottom" value="0" />
+            <enum name="tr_bl" value="1" />
+            <enum name="right_left" value="2" />
+            <enum name="br_tl" value="3" />
+            <enum name="bottom_top" value="4" />
+            <enum name="bl_tr" value="5" />
+            <enum name="left_right" value="6" />
+            <enum name="tl_br" value="7" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="UiTextView">
+        <attr name="tvColor" format="color|reference" />
+        <attr name="tvColorDark" format="color|reference" />
+        <attr name="tvColorLight" format="color|reference" />
+        <attr name="tvColorHint" format="color|reference" />
+        <attr name="underLine" format="boolean" />
+        <attr name="textGradientStart" format="color|reference" />
+        <attr name="textGradientEnd" format="color|reference" />
+        <attr name="textGradient" format="boolean" />
+    </declare-styleable>
+
+
+
+
+    <style name="RadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#097500</item>
+        <item name="colorControlActivated">#097500</item>
+        <item name="colorAccent">#097500</item>
+        <item name="android:textColorSecondary">#097500</item>
+        <item name="buttonTint">#097500</item>
+    </style>
+
+
+    <declare-styleable name="StickerView">
+        <attr name="showIcons" format="boolean" />
+        <attr name="showBorder" format="boolean" />
+        <attr name="bringToFrontCurrentSticker" format="boolean" />
+        <attr name="borderColor" format="color" />
+        <attr name="borderAlpha" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="InputDataApp">
+        <attr name="ida_hint" format="string" />
+        <attr name="ida_inputType">
+            <enum name="none" value="0x00000000" />
+            <enum name="text" value="0x00000001" />
+            <enum name="numberSigned" value="0x00001002" />
+            <enum name="numberDecimal" value="0x00002002" />
+            <enum name="intNumber" value="1001001" />
+            <enum name="doubleNumber" value="1001002" />
+        </attr>
+        <attr name="ida_error" format="string" />
+        <attr name="ida_isInputEnabled" format="boolean" />
+        <attr name="ida_Type" format="integer">
+            <enum name="currency" value="0" />
+            <enum name="percent" value="1" />
+            <enum name="other" value="2" />
+        </attr>
+        <attr name="ida_maxLength" format="integer" />
+    </declare-styleable>
+
+    <attr name="radiusView" format="float" />
+
+
+    <declare-styleable name="IndicatorDotView">
+        <attr name="dotRadius" format="dimension" />
+        <attr name="dotColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="ProgressCustom">
+        <attr name="progressBackground" format="color" />
+        <attr name="progressTint" format="color" />
+        <attr name="maxValue" format="float" />
+        <attr name="minValue" format="float" />
+        <attr name="currentValue" format="float" />
+        <attr name="autoAnimate" format="boolean" />
+        <attr name="gradientStart" format="color" />
+        <attr name="gradientEnd" format="color" />
+        <attr name="gradient" format="boolean" />
+        <attr name="timeAnim" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="DotsIndicator">
+        <attr name="dotsColor" format="color" />
+        <attr name="selectedDotColor" format="color" />
+        <attr name="dotsSize" format="dimension" />
+        <attr name="dotsWidthFactor" format="float" />
+        <attr name="dotsSpacing" format="dimension" />
+        <attr name="dotsCornerRadius" format="dimension" />
+        <attr name="progressMode" format="boolean" />
+        <attr name="dotsClickable" format="boolean" />
+        <attr name="dotsElevation" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="TrackerStyle">
+        <attr name="track_dark_off" format="color" />
+        <attr name="track_light_off" format="color" />
+        <attr name="thumbColorDarkOff" format="color" />
+        <attr name="thumbColorLightOff" format="color" />
+        <attr name="trackColorDarkOn" format="color" />
+        <attr name="trackColorLightOn" format="color" />
+        <attr name="thumbColorDarkOn" format="color" />
+        <attr name="thumbColorLightOn" format="color" />
+        <attr name="stateTrack" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="UiImageView">
+        <attr name="iv_tint_dark" format="color" />
+        <attr name="iv_tint_light" format="color" />
+        <attr name="bg_dark" format="color" />
+        <attr name="bg_light" format="color" />
+    </declare-styleable>
+</resources>
