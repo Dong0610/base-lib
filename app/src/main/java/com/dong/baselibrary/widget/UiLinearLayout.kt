@@ -132,6 +132,17 @@ class UiLinearLayout @JvmOverloads constructor(
         background = backgroundDrawable
     }
 
+    fun setGradientStroke(intArray: IntArray?){
+        this.strokeGradient = intArray
+        postInvalidate()
+        requestLayout()
+    }
+    fun setGradientStrokeOrientation(intArray: GradientOrientation){
+        strokeGradientOrientation=intArray
+        postInvalidate()
+        requestLayout()
+    }
+
     fun setCornerRadius(radius: Float) {
         cornerRadius = radius
         (background as? GradientDrawable)?.cornerRadius = radius+1.2f
