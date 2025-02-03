@@ -116,7 +116,8 @@ A custom `LinearLayout` for Android with enhanced UI features such as gradient b
     app:bgGradientEnd="#C70039"
     app:clipContent="true" />
 ⚡ Kotlin
-
+```
+```c 
 val uiLinearLayout = UiLinearLayout(context).apply {
     setCornerRadius(12f)
     setStrokeWidth(2)
@@ -124,6 +125,7 @@ val uiLinearLayout = UiLinearLayout(context).apply {
     setBgColor(Color.WHITE, Color.BLACK)
     setGradientBg(Color.RED, Color.BLUE, Color.GREEN)
 }
+```
 🎨 XML Attributes
 Attribute	Description
 app:cornerRadius	Sets the corner radius
@@ -136,14 +138,11 @@ app:bgGradientStart	Start color of gradient background
 app:bgGradientEnd	End color of gradient background
 app:clipContent	Enables or disables clipping content
 🎨 Customization
-Gradient Background: Use setGradientBg(startColor, centerColor, endColor) to set a gradient background.
-Gradient Stroke: Use setGradientStroke(intArrayOf(Color.RED, Color.BLUE)) to set a gradient stroke.
-Stroke Orientation: Customize stroke orientation with setGradientStrokeOrientation(GradientOrientation.LEFT_TO_RIGHT).
-Dark Mode Handling: The view automatically switches colors based on the device's dark mode settings.
-markdown
-Sao chép
-Chỉnh sửa
-
+<br/>Gradient Background: Use setGradientBg(startColor, centerColor, endColor) to set a gradient background.
+<br/>Gradient Stroke: Use setGradientStroke(intArrayOf(Color.RED, Color.BLUE)) to set a gradient stroke.
+<br/>Stroke Orientation: Customize stroke orientation with setGradientStrokeOrientation(GradientOrientation.LEFT_TO_RIGHT).
+<br/>Dark Mode Handling: The view automatically switches colors based on the device's dark mode settings.
+```markdown
 ### Key Improvements:
 
 - **Headings and Subheadings:** I used `#` and `##` for a clear title and subtitle structure, improving readability.
@@ -151,7 +150,7 @@ Chỉnh sửa
 - **Code Blocks:** XML and Kotlin examples are formatted inside code blocks for clarity.
 - **Tables:** Attributes and descriptions are neatly organized in a table for quick reference.
 - **Customization Section:** Clear instructions on how to use specific features (like gradient backgrounds or stroke customizations).
-
+```
 
 
 # 🌟 UiTextView
@@ -184,9 +183,13 @@ UiTextView extends `AppCompatTextView`, adding advanced customization options su
     app:cornerRadius="12dp"
     app:strokeWidth="2dp"/>
 ⚡ Kotlin
+```
+
+```cc
 val uiTextView = UiTextView(context)
 uiTextView.text = "Gradient Text"
 uiTextView.setTextColorGradient(Color.RED, Color.BLUE, TextGradientOrientation.LEFT_TO_RIGHT)
+```
 🎨 Customization
 Attribute	Description
 textGradient	Enables text gradient
@@ -224,40 +227,38 @@ You can add the `NativeCanvasView` and use its drawing functions like so:
 myViewGroup.nativeCanvas {
     drawCircle(100f, 100f, 50f, Paint().apply { color = Color.RED })
 }
+```
 Draw a Triangle
 To draw a triangle, use the drawTriangle function:
 
-kotlin
-Sao chép
-Chỉnh sửa
+```kotlin
+
 canvas.drawTriangle(Paint().apply { color = Color.BLUE }, 
     PointF(100f, 100f), 
     PointF(200f, 100f), 
     PointF(150f, 200f))
+```
 Draw a Rounded Polygon
 For a rounded polygon, you can use the drawRoundedPolygon function, like this:
 
-kotlin
-Sao chép
-Chỉnh sửa
+```kotlin
 canvas.drawRoundedPolygon(
     listOf(PointF(50f, 50f), PointF(150f, 50f), PointF(100f, 150f)),
     20f,
     Paint().apply { color = Color.GREEN }
 )
+```
 🎨 Shape Drawing Functions
-Circle: drawCircle(x, y, radius, paint)
-Triangle: drawTriangle(paint, point1, point2, point3)
-Rounded Polygon: drawRoundedPolygon(points, radius, paint)
-These functions allow you to draw basic shapes and customize their appearance with Paint objects.
+<br/>Circle: drawCircle(x, y, radius, paint)
+<br/>Triangle: drawTriangle(paint, point1, point2, point3)
+<br/>Rounded Polygon: drawRoundedPolygon(points, radius, paint)
+<br/>These functions allow you to draw basic shapes and customize their appearance with Paint objects.
 
-markdown
-Sao chép
-Chỉnh sửa
-
+```markdown
 ### Key Improvements:
 
 - **Headings and Subheadings:** I used `#` for titles and `##` for sections like "Overview" and "Features" to make it easy to navigate.
 - **Code Blocks:** Kotlin code examples are formatted in code blocks to preserve indentation and clarity.
 - **Bullet Points:** Features and shape functions are neatly listed for easy understanding.
 - **Usage Examples:** I provided clear code samples for adding the view and drawing different shapes.
+```
