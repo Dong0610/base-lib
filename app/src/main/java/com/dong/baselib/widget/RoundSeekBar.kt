@@ -121,7 +121,6 @@ class RoundSeekBar @JvmOverloads constructor(
         pointCenter.y = height / 2f
     }
 
-
     fun onValueChange(onSeekChange: ((Float) -> Unit)) {
         this.onSeekChange = onSeekChange
         invalidate()
