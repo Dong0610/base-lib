@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    namespace 'com.dong.baselibrary'
+    namespace 'com.dong.baselib'
     compileSdk 34
 
     defaultConfig {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,9 +59,9 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.dong.baselibrary'
-                artifactId = 'native-library'
-                version = '1.0.1'
+                groupId = 'com.dong.baselib'
+                artifactId = 'native-lib'
+                version = '1.0.4'
             }
         }
     }
