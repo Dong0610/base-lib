@@ -13,9 +13,9 @@ public class RenderOptionsBase
    
    PreserveAspectRatio  preserveAspectRatio = null;
    String               targetId = null;
-   SVGBase.Box              viewBox = null;
+   Box              viewBox = null;
    String               viewId = null;
-   SVGBase.Box              viewPort = null;
+   Box              viewPort = null;
 
 
    

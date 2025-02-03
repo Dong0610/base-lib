@@ -4,25 +4,31 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.Outline
+import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.setPadding
 import com.dong.baselibrary.R
 import com.dong.baselibrary.base.GradientOrientation
-import java.lang.Math.pow
-import kotlin.math.sqrt
 
 
 @SuppressLint("CustomViewStyleable")
@@ -33,7 +39,7 @@ class RoundImageView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val imageView: AppCompatImageView = AppCompatImageView(context, attrs, defStyleAttr)
-    private val roundBorder= UiLinearLayout(context,attrs, defStyleAttr)
+    private val roundBorder = UiLinearLayout(context, attrs, defStyleAttr)
     private var cornerRadius: Float = 0f
     private var stWidth: Float = 0f
     private var stColorDark: Int = Color.BLACK
@@ -121,35 +127,37 @@ class RoundImageView @JvmOverloads constructor(
             val scaleTypeValue = imageViewAttrs.getInt(R.styleable.RoundImageView_ri_scaleType, 3)
             val adjustViewBounds =
                 imageViewAttrs.getBoolean(R.styleable.RoundImageView_android_adjustViewBounds, true)
+            val padding =
+                imageViewAttrs.getDimension(R.styleable.RoundImageView_android_padding, 0f)
             imageViewAttrs.recycle()
-
+            this.setPadding(0)
+            imageView.setPadding(padding.toInt())
 
             if (isGradient) {
                 updateGradient()
             } else {
                 updateBackground()
             }
-            if (srcImgResId != 0) {
-                imageView.setImageResource(srcImgResId)
-            }
+
             this.clipContent = true
 
             imageView.scaleType = parseScaleType(scaleTypeValue)
             imageView.rotation = 0f
             imageView.adjustViewBounds = adjustViewBounds
             imageView.setBackgroundColor(fromColor("00000000"))
-            this@RoundImageView.setPadding(stWidth.toInt())
-            val backgroundImg = GradientDrawable().apply {
-                cornerRadius = this@RoundImageView.cornerRadius
-            }
-            this@RoundImageView.post {
-                val cornerRadius = sqrt(
-                    pow((width - 2 * stWidth).toDouble(), 2.0) +
-                            pow((height - 2 * stWidth).toDouble(), 2.0)
-                ).toFloat() / 2
-                backgroundImg.cornerRadius= cornerRadius
-                imageView.background = backgroundImg
-            }
+            val layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
+            )
+
+            layoutParams.setMargins(
+                stWidth.toInt(),
+                stWidth.toInt(),
+                stWidth.toInt(),
+                stWidth.toInt()
+            )
+
+            imageView.layoutParams = layoutParams
             addView(imageView)
             setClipContent(true)
             setWillNotDraw(false)
@@ -158,10 +166,20 @@ class RoundImageView @JvmOverloads constructor(
             roundBorder.setCornerRadius(radius = cornerRadius)
             roundBorder.setGradientStroke(strokeGradient)
             addView(roundBorder)
-
+            if (srcImgResId != 0) {
+                setImageResource(srcImgResId)
+            }
         }
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageView.outlineProvider =
+                OutlineProvider(w - 2 * stWidth.toInt(), h - 2 * stWidth.toInt())
+            imageView.clipToOutline = true
+        }
+    }
 
     private fun parseScaleType(value: Int): ImageView.ScaleType = when (value) {
         0 -> ImageView.ScaleType.MATRIX
@@ -173,6 +191,17 @@ class RoundImageView @JvmOverloads constructor(
         6 -> ImageView.ScaleType.CENTER_CROP
         7 -> ImageView.ScaleType.CENTER_INSIDE
         else -> ImageView.ScaleType.FIT_CENTER
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private inner class OutlineProvider(var w: Int, var h: Int) : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            val mBorderRect = Rect(
+                0,
+                0, w, h
+            )
+            outline.setRoundRect(mBorderRect, cornerRadius * 0.95f)
+        }
     }
 
 
@@ -190,30 +219,71 @@ class RoundImageView @JvmOverloads constructor(
         background = backgroundDrawable
     }
 
+
+    fun uriToBitmap(uri: Uri): Bitmap? {
+        return try {
+            val inputStream = context.contentResolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun getRoundedDrawable(bitmap: Bitmap): RoundedBitmapDrawable {
+        val roundedDrawable = RoundedBitmapDrawableFactory.create(context.resources, bitmap)
+        return roundedDrawable
+    }
+
+    fun drawableToBitmap(drawable: Drawable): Bitmap {
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
     fun setImageResource(resource: Int) {
-        imageView.setImageResource(resource)
+        val drawable = AppCompatResources.getDrawable(context, resource)
+        drawable?.let {
+            val bitmap = drawableToBitmap(it)
+            imageView.setImageDrawable(getRoundedDrawable(bitmap))
+        } ?: Log.e("ImageError", "Drawable resource not found: $resource")
     }
 
     fun setImageDrawable(resource: Drawable?) {
-        imageView.setImageDrawable(resource)
+        resource?.let {
+            val bitmap = (resource as BitmapDrawable).bitmap
+            lastedBitmap = bitmap
+            imageView.setImageDrawable(getRoundedDrawable(bitmap))
+        }
     }
 
     fun setImageBitmap(resource: Bitmap?) {
-        imageView.setImageBitmap(resource)
+        resource?.let {
+            lastedBitmap = it
+            imageView.setImageDrawable(getRoundedDrawable(it))
+        }
     }
 
+    private var lastedBitmap: Bitmap? = null
     fun setImageUri(resource: Uri?) {
-        imageView.setImageURI(resource)
+        resource?.let {
+            val bitmap = uriToBitmap(it)
+            lastedBitmap = bitmap
+            bitmap?.let { imageView.setImageDrawable(getRoundedDrawable(it)) }
+        }
     }
-
-    fun setScaleType(scaleType: ImageView.ScaleType) {
-        imageView.scaleType = scaleType
-    }
-
 
     fun setCornerRadius(radius: Float) {
         cornerRadius = radius
         (background as? GradientDrawable)?.cornerRadius = radius + 1.2f
+        setImageBitmap(lastedBitmap)
+
     }
 
     fun setStrokeWidth(width: Int) {

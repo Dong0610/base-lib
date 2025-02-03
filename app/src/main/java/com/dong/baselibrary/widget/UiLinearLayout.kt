@@ -6,16 +6,23 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
+import android.graphics.Outline
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.core.view.setPadding
 import com.dong.baselibrary.R
 import com.dong.baselibrary.base.GradientOrientation
+import com.dong.baselibrary.canvas.drawRoundRectPath
 
 @SuppressLint("CustomViewStyleable")
 class UiLinearLayout @JvmOverloads constructor(
@@ -115,11 +122,21 @@ class UiLinearLayout @JvmOverloads constructor(
             setPadding(stWidth.toInt())
         }
         setWillNotDraw(false)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            outlineProvider = OutlineProvider()
+//            clipToOutline = true
+//        }
+    }
 
+    fun setGradientBg(start: Int, center: Int, end: Int) {
+        bgGradientStart = start
+        bgGradientCenter = center
+        bgGradientEnd = end
+        updateGradient()
     }
 
     private fun updateGradient() {
-         val backgroundDrawable = GradientDrawable(
+        val backgroundDrawable = GradientDrawable(
             gradientOrientation,
             if (bgGradientCenter != Color.TRANSPARENT) intArrayOf(
                 bgGradientStart,
@@ -127,25 +144,26 @@ class UiLinearLayout @JvmOverloads constructor(
                 bgGradientEnd
             ) else intArrayOf(bgGradientStart, bgGradientEnd)
         ).apply {
-            cornerRadius = this@UiLinearLayout.cornerRadius+1.2f
+            cornerRadius = this@UiLinearLayout.cornerRadius + 1.2f
         }
         background = backgroundDrawable
     }
 
-    fun setGradientStroke(intArray: IntArray?){
+    fun setGradientStroke(intArray: IntArray?) {
         this.strokeGradient = intArray
         postInvalidate()
         requestLayout()
     }
-    fun setGradientStrokeOrientation(intArray: GradientOrientation){
-        strokeGradientOrientation=intArray
+
+    fun setGradientStrokeOrientation(intArray: GradientOrientation) {
+        strokeGradientOrientation = intArray
         postInvalidate()
         requestLayout()
     }
 
     fun setCornerRadius(radius: Float) {
         cornerRadius = radius
-        (background as? GradientDrawable)?.cornerRadius = radius+1.2f
+        (background as? GradientDrawable)?.cornerRadius = radius + 1.2f
     }
 
     fun setStrokeWidth(width: Int) {
@@ -158,7 +176,7 @@ class UiLinearLayout @JvmOverloads constructor(
 
         val backgroundDrawable = GradientDrawable().apply {
             setColor(backgroundColor)
-            cornerRadius = this@UiLinearLayout.cornerRadius+1.2f
+            cornerRadius = this@UiLinearLayout.cornerRadius + 1.2f
         }
         background = backgroundDrawable
     }
@@ -246,13 +264,41 @@ class UiLinearLayout @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode) stColorDark else stColorLight
             }
-            val rectF = RectF(
+            mBorderRectF = RectF(
                 this@UiLinearLayout.stWidth / 2,
                 this@UiLinearLayout.stWidth / 2,
                 width.toFloat() - this@UiLinearLayout.stWidth / 2,
                 height.toFloat() - this@UiLinearLayout.stWidth / 2
             )
-            canvas.drawRoundRect(rectF, cornerRadius*.825f, cornerRadius*.825f, paint)
+            canvas.drawRoundRectPath(
+                mBorderRectF,
+                cornerRadius * 1.2f,
+                true,
+                true,
+                true,
+                true,
+                paint
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                outlineProvider = OutlineProvider()
+                clipToOutline = true
+            }
         }
     }
+
+    private var mBorderRectF = RectF(0f, 0f, 0f, 0f)
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private inner class OutlineProvider : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            val mBorderRect = Rect(
+                mBorderRectF.left.toInt(),
+                mBorderRectF.top.toInt(),
+                mBorderRectF.right.toInt(),
+                mBorderRectF.bottom.toInt()
+            )
+            outline.setRoundRect(mBorderRect, cornerRadius)
+        }
+    }
+
 }

@@ -16,6 +16,13 @@
         <attr name="svg" format="reference|string" />
         <attr name="css" format="string" />
     </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_circle_background_color" format="color" />
+        <attr name="civ_custom_radius" format="dimension" />
+    </declare-styleable>
 
     <declare-styleable name="StyleView">
         <attr name="cornerRadius" format="dimension" />
@@ -33,6 +40,8 @@
 
     <declare-styleable name="RoundImageView">
         <attr name="ri_src" format="integer" />
+        <attr name="android:src" format="integer|reference" />
+        <attr name="android:padding" format="reference|dimension" />
         <attr name="android:adjustViewBounds" format="boolean"/>
         <attr name="ri_scaleType">
             <enum name="matrix" value="0" />
@@ -91,15 +100,6 @@
     </declare-styleable>
 
 
-
-
-    <style name="RadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">#097500</item>
-        <item name="colorControlActivated">#097500</item>
-        <item name="colorAccent">#097500</item>
-        <item name="android:textColorSecondary">#097500</item>
-        <item name="buttonTint">#097500</item>
-    </style>
 
 
     <declare-styleable name="StickerView">

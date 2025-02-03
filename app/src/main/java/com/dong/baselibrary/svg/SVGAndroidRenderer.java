@@ -1507,10 +1507,10 @@ public class SVGAndroidRenderer
       float  dy = (obj.dy == null || obj.dy.size() == 0) ? 0f : obj.dy.get(0).floatValueY(this);
 
       
-      Style.TextAnchor  anchor = getAnchorPosition();
-      if (anchor != Style.TextAnchor.Start) {
+      TextAnchor  anchor = getAnchorPosition();
+      if (anchor != TextAnchor.Start) {
          float  textWidth = calculateTextWidth(obj);
-         if (anchor == Style.TextAnchor.Middle) {
+         if (anchor == TextAnchor.Middle) {
             x -= (textWidth / 2);
          } else {
             x -= textWidth;  
@@ -1585,7 +1585,7 @@ public class SVGAndroidRenderer
    }
 
 
-   private Style.TextAnchor  getAnchorPosition()
+   private TextAnchor  getAnchorPosition()
    {
       if (state.style.direction == Style.TextDirection.LTR || state.style.textAnchor == TextAnchor.Middle)
          return state.style.textAnchor;
@@ -1709,10 +1709,10 @@ public class SVGAndroidRenderer
 
             
             if (specifiedX) {
-              Style.TextAnchor  anchor = getAnchorPosition();
-              if (anchor != Style.TextAnchor.Start) {
+              TextAnchor  anchor = getAnchorPosition();
+              if (anchor != TextAnchor.Start) {
                  float  textWidth = calculateTextWidth(tspan);
-                 if (anchor == Style.TextAnchor.Middle) {
+                 if (anchor == TextAnchor.Middle) {
                     x -= (textWidth / 2);
                  } else {
                     x -= textWidth;  
@@ -1807,10 +1807,10 @@ public class SVGAndroidRenderer
       float  startOffset = (obj.startOffset != null) ? obj.startOffset.floatValue(this, measure.getLength()) : 0f;
 
       
-      Style.TextAnchor  anchor = getAnchorPosition();
-      if (anchor != Style.TextAnchor.Start) {
+      TextAnchor  anchor = getAnchorPosition();
+      if (anchor != TextAnchor.Start) {
          float  textWidth = calculateTextWidth(obj);
-         if (anchor == Style.TextAnchor.Middle) {
+         if (anchor == TextAnchor.Middle) {
             startOffset -= (textWidth / 2);
          } else {
             startOffset -= textWidth;  
@@ -2652,7 +2652,7 @@ public class SVGAndroidRenderer
       Typeface font = null;
       int      typefaceStyle;
 
-      boolean  italic = (fontStyle == Style.FontStyle.italic);
+      boolean  italic = (fontStyle == FontStyle.italic);
       typefaceStyle = (fontWeight >= Style.FONT_WEIGHT_BOLD) ? (italic ? Typeface.BOLD_ITALIC : Typeface.BOLD)
                                                              : (italic ? Typeface.ITALIC : Typeface.NORMAL);
 
@@ -4293,9 +4293,9 @@ public class SVGAndroidRenderer
       float  dy = (obj.dy == null || obj.dy.size() == 0) ? 0f : obj.dy.get(0).floatValueY(this);
 
       
-      if (state.style.textAnchor != Style.TextAnchor.Start) {
+      if (state.style.textAnchor != TextAnchor.Start) {
          float  textWidth = calculateTextWidth(obj);
-         if (state.style.textAnchor == Style.TextAnchor.Middle) {
+         if (state.style.textAnchor == TextAnchor.Middle) {
             x -= (textWidth / 2);
          } else {
             x -= textWidth;  
@@ -4545,9 +4545,9 @@ public class SVGAndroidRenderer
       float  dy = (obj.dy == null || obj.dy.size() == 0) ? 0f : obj.dy.get(0).floatValueY(this);
 
       
-      if (state.style.textAnchor != Style.TextAnchor.Start) {
+      if (state.style.textAnchor != TextAnchor.Start) {
          float  textWidth = calculateTextWidth(obj);
-         if (state.style.textAnchor == Style.TextAnchor.Middle) {
+         if (state.style.textAnchor == TextAnchor.Middle) {
             x -= (textWidth / 2);
          } else {
             x -= textWidth;  
