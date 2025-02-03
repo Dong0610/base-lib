@@ -27,7 +27,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.setPadding
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.R
 
 

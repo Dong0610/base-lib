@@ -19,8 +19,6 @@ fun <A> A.toJson(): String {
     return Gson().toJson(this)
 }
 
-
-
 @Suppress("DEPRECATION")
 inline fun <reified T : Serializable> Bundle.getSerializable(key: String): T? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getSerializable(key, T::class.java)

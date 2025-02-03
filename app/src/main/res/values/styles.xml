@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BaseDialog" parent="android:Theme.Holo.Dialog">
-        <item name="android:windowMinWidthMajor">90%</item>
-        <item name="android:windowMinWidthMinor">90%</item>
-    </style>
-
-    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
-
-    <style name="BaseBottomSheetDialog" parent="@style/Theme.Material3.DayNight.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
     <declare-styleable name="SVGImageView">
         <attr name="svg" format="reference|string" />
         <attr name="css" format="string" />
@@ -172,10 +161,34 @@
         <attr name="thumbColorLightOn" format="color" />
         <attr name="stateTrack" format="boolean" />
     </declare-styleable>
-    <declare-styleable name="UiImageView">
-        <attr name="iv_tint_dark" format="color" />
-        <attr name="iv_tint_light" format="color" />
-        <attr name="bg_dark" format="color" />
-        <attr name="bg_light" format="color" />
+    <declare-styleable name="RoundSeekBar">
+        <attr name="seekBackground" format="string" />
+        <attr name="seekProgress" format="string" />
+        <attr name="sk_minValue" format="float" />
+        <attr name="sk_maxValue" format="float" />
+        <attr name="sk_stepValue" format="float" />
+        <attr name="sk_currentValue" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="RippleBackground">
+        <attr name="rb_color" format="color" />
+        <attr name="rb_strokeWidth" format="dimension" />
+        <attr name="rb_radius" format="dimension" />
+        <attr name="auto_run" format="boolean" />
+        <attr name="rb_duration" format="integer" />
+        <attr name="rb_rippleAmount" format="integer" />
+        <attr name="rb_scale" format="float" />
+        <attr name="rb_type" format="enum">
+            <enum name="fillRipple" value="0" />
+            <enum name="strokeRipple" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="GradientSwitch">
+        <attr name="trackColorOff" format="string"/>
+        <attr name="trackColorOn" format="string"/>
+        <attr name="thumbColorOff" format="string"/>
+        <attr name="thumbColorOn" format="string"/>
+        <attr name="gd_stateTrack" format="boolean"/>
     </declare-styleable>
 </resources>

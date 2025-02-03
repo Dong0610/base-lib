@@ -1,4 +1,4 @@
-package com.dong.baselib.base
+package com.dong.baselib.widget
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint

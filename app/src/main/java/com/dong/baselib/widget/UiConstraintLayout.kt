@@ -21,7 +21,6 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
 import com.dong.baselib.R
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.canvas.drawRoundRectPath
 
 @SuppressLint("CustomViewStyleable")

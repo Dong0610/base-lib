@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatTextView
 import com.dong.baselib.R
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.canvas.drawRoundRectPath
 
 enum class TextGradientOrientation {
