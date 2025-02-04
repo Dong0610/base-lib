@@ -258,12 +258,7 @@ class UiConstraintLayout @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode) stColorDark else stColorLight
             }
-            val rectF = RectF(
-                this@UiConstraintLayout.stWidth / 2,
-                this@UiConstraintLayout.stWidth / 2,
-                width.toFloat() - this@UiConstraintLayout.stWidth / 2,
-                height.toFloat() - this@UiConstraintLayout.stWidth / 2
-            )
+
             canvas.drawRoundRectPath(
                 mBorderRectF,
                 cornerRadius * 1.2f,
@@ -291,7 +286,7 @@ class UiConstraintLayout @JvmOverloads constructor(
                 mBorderRectF.right.toInt(),
                 mBorderRectF.bottom.toInt()
             )
-            val minSize = minOf(mBorderRectF.width(),mBorderRectF.height())
+            val minSize = minOf(mBorderRectF.width()/2,mBorderRectF.height()/2)
             val conner = if(cornerRadius>minSize) minSize else cornerRadius
             outline.setRoundRect(mBorderRect, conner)
         }

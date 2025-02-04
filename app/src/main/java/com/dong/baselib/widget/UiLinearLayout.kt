@@ -293,7 +293,7 @@ class UiLinearLayout @JvmOverloads constructor(
                 mBorderRectF.bottom.toInt()
             )
 
-            val minSize = minOf(mBorderRectF.width(),mBorderRectF.height())
+            val minSize = minOf(mBorderRectF.width()/2,mBorderRectF.height()/2)
             val conner = if(cornerRadius>minSize) minSize else cornerRadius
             outline.setRoundRect(mBorderRect, conner)
         }
