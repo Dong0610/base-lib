@@ -17,9 +17,11 @@ import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
@@ -27,7 +29,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.setPadding
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.R
 
 
@@ -65,24 +66,24 @@ class RoundImageView @JvmOverloads constructor(
     init {
         attrs?.let {
 
-            val typedArray = context.obtainStyledAttributes(it, R.styleable.StyleView)
-            cornerRadius = typedArray.getDimension(R.styleable.StyleView_cornerRadius, 0f)
-            stWidth = typedArray.getDimension(R.styleable.StyleView_strokeWidth, 0f)
-            stColorDark = typedArray.getColor(R.styleable.StyleView_stColorDark, Color.BLACK)
-            stColorLight = typedArray.getColor(R.styleable.StyleView_stColorLight, Color.BLACK)
-            bgColorDark = typedArray.getColor(R.styleable.StyleView_bgColorDark, Color.TRANSPARENT)
+            val imageViewAttrs = context.obtainStyledAttributes(it, R.styleable.RoundImageView)
+            cornerRadius = imageViewAttrs.getDimension(R.styleable.RoundImageView_cornerRadius, 0f)
+            stWidth = imageViewAttrs.getDimension(R.styleable.RoundImageView_strokeWidth, 0f)
+            stColorDark = imageViewAttrs.getColor(R.styleable.RoundImageView_stColorDark, Color.BLACK)
+            stColorLight = imageViewAttrs.getColor(R.styleable.RoundImageView_stColorLight, Color.BLACK)
+            bgColorDark = imageViewAttrs.getColor(R.styleable.RoundImageView_bgColorDark, Color.TRANSPARENT)
             bgColorLight =
-                typedArray.getColor(R.styleable.StyleView_bgColorLight, Color.TRANSPARENT)
+                imageViewAttrs.getColor(R.styleable.RoundImageView_bgColorLight, Color.TRANSPARENT)
             bgGradientStart =
-                typedArray.getColor(R.styleable.StyleView_bgGradientStart, Color.TRANSPARENT)
+                imageViewAttrs.getColor(R.styleable.RoundImageView_bgGradientStart, Color.TRANSPARENT)
             bgGradientCenter =
-                typedArray.getColor(R.styleable.StyleView_bgGradientCenter, Color.TRANSPARENT)
+                imageViewAttrs.getColor(R.styleable.RoundImageView_bgGradientCenter, Color.TRANSPARENT)
             bgGradientEnd =
-                typedArray.getColor(R.styleable.StyleView_bgGradientEnd, Color.TRANSPARENT)
+                imageViewAttrs.getColor(R.styleable.RoundImageView_bgGradientEnd, Color.TRANSPARENT)
             isGradient = bgGradientStart != Color.TRANSPARENT && bgGradientEnd != Color.TRANSPARENT
-            val orientation = context.obtainStyledAttributes(attrs, R.styleable.Orientation)
+
             gradientOrientation =
-                when (orientation.getInt(R.styleable.Orientation_bgGdOrientation, 0)) {
+                when (imageViewAttrs.getInt(R.styleable.RoundImageView_bgGdOrientation, 0)) {
                     1 -> GradientDrawable.Orientation.TR_BL
                     2 -> GradientDrawable.Orientation.RIGHT_LEFT
                     3 -> GradientDrawable.Orientation.BR_TL
@@ -93,7 +94,7 @@ class RoundImageView @JvmOverloads constructor(
                     else -> GradientDrawable.Orientation.TOP_BOTTOM
                 }
             strokeGradientOrientation =
-                when (orientation.getInt(R.styleable.Orientation_strokeGdOrientation, 6)) {
+                when (imageViewAttrs.getInt(R.styleable.RoundImageView_strokeGdOrientation, 6)) {
                     0 -> GradientOrientation.TOP_TO_BOTTOM
                     1 -> GradientOrientation.TR_BL
                     2 -> GradientOrientation.RIGHT_TO_LEFT
@@ -104,12 +105,12 @@ class RoundImageView @JvmOverloads constructor(
                     7 -> GradientOrientation.TL_BR
                     else -> GradientOrientation.TOP_TO_BOTTOM
                 }
-            orientation.recycle()
-            clipContent = typedArray.getBoolean(
-                R.styleable.StyleView_clipContent,
+
+            clipContent = imageViewAttrs.getBoolean(
+                R.styleable.RoundImageView_clipContent,
                 true
             )
-            val gradient = typedArray.getString(R.styleable.StyleView_strokeGradient)
+            val gradient = imageViewAttrs.getString(R.styleable.RoundImageView_strokeGradient)
             if (!gradient.isNullOrEmpty()) {
                 strokeGradient = gradient.split(" ").map {
                     if (it.isValidHexColor()) {
@@ -120,9 +121,6 @@ class RoundImageView @JvmOverloads constructor(
                 }.toIntArray()
             }
 
-            typedArray.recycle()
-
-            val imageViewAttrs = context.obtainStyledAttributes(it, R.styleable.RoundImageView)
             val srcImgResId = imageViewAttrs.getResourceId(R.styleable.RoundImageView_ri_src, 0)
             val scaleTypeValue = imageViewAttrs.getInt(R.styleable.RoundImageView_ri_scaleType, 3)
             val adjustViewBounds =
@@ -161,6 +159,9 @@ class RoundImageView @JvmOverloads constructor(
             addView(imageView)
             setClipContent(true)
             setWillNotDraw(false)
+            val param1= LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
+            param1.setMargins(0,0,0,0)
+            roundBorder.layoutParams=param1
             roundBorder.setBgColor(transparent, transparent)
             roundBorder.setStrokeWidth(stWidth.toInt())
             roundBorder.setCornerRadius(radius = cornerRadius)

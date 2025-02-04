@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatTextView
 import com.dong.baselib.R
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.canvas.drawRoundRectPath
 
 enum class TextGradientOrientation {
@@ -107,24 +106,24 @@ class UiTextView @JvmOverloads constructor(
             defStyleAttr,
             0
         ).apply {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.StyleView)
-            cornerRadius = typedArray.getDimension(R.styleable.StyleView_cornerRadius, 0f)
-            stWidth = typedArray.getDimension(R.styleable.StyleView_strokeWidth, 0f)
-            stColorDark = typedArray.getColor(R.styleable.StyleView_stColorDark, Color.BLACK)
-            stColorLight = typedArray.getColor(R.styleable.StyleView_stColorLight, Color.BLACK)
-            bgColorDark = typedArray.getColor(R.styleable.StyleView_bgColorDark, Color.TRANSPARENT)
+            val textViewAttrs = context.obtainStyledAttributes(attrs, R.styleable.UiTextView)
+            cornerRadius = textViewAttrs.getDimension(R.styleable.UiTextView_cornerRadius, 0f)
+            stWidth = textViewAttrs.getDimension(R.styleable.UiTextView_strokeWidth, 0f)
+            stColorDark = textViewAttrs.getColor(R.styleable.UiTextView_stColorDark, Color.BLACK)
+            stColorLight = textViewAttrs.getColor(R.styleable.UiTextView_stColorLight, Color.BLACK)
+            bgColorDark = textViewAttrs.getColor(R.styleable.UiTextView_bgColorDark, Color.TRANSPARENT)
             bgColorLight =
-                typedArray.getColor(R.styleable.StyleView_bgColorLight, Color.TRANSPARENT)
+                textViewAttrs.getColor(R.styleable.UiTextView_bgColorLight, Color.TRANSPARENT)
             bgGradientStart =
-                typedArray.getColor(R.styleable.StyleView_bgGradientStart, Color.TRANSPARENT)
+                textViewAttrs.getColor(R.styleable.UiTextView_bgGradientStart, Color.TRANSPARENT)
             bgGradientCenter =
-                typedArray.getColor(R.styleable.StyleView_bgGradientCenter, Color.TRANSPARENT)
+                textViewAttrs.getColor(R.styleable.UiTextView_bgGradientCenter, Color.TRANSPARENT)
             bgGradientEnd =
-                typedArray.getColor(R.styleable.StyleView_bgGradientEnd, Color.TRANSPARENT)
+                textViewAttrs.getColor(R.styleable.UiTextView_bgGradientEnd, Color.TRANSPARENT)
             isGradient = bgGradientStart != Color.TRANSPARENT && bgGradientEnd != Color.TRANSPARENT
-            val orientationData = context.obtainStyledAttributes(attrs, R.styleable.Orientation)
+
             gradientOrientation =
-                when (orientationData.getInt(R.styleable.Orientation_bgGdOrientation, 0)) {
+                when (textViewAttrs.getInt(R.styleable.UiTextView_bgGdOrientation, 0)) {
                     1 -> GradientDrawable.Orientation.TR_BL
                     2 -> GradientDrawable.Orientation.RIGHT_LEFT
                     3 -> GradientDrawable.Orientation.BR_TL
@@ -135,7 +134,7 @@ class UiTextView @JvmOverloads constructor(
                     else -> GradientDrawable.Orientation.TOP_BOTTOM
                 }
 
-            val gradient = typedArray.getString(R.styleable.StyleView_strokeGradient)
+            val gradient = textViewAttrs.getString(R.styleable.UiTextView_strokeGradient)
             if (!gradient.isNullOrEmpty()) {
                 strokeGradient = gradient.split(" ").map {
                     if (it.isValidHexColor()) {
@@ -146,7 +145,7 @@ class UiTextView @JvmOverloads constructor(
                 }.toIntArray()
             }
             strokeGradientOrientation =
-                when (orientationData.getInt(R.styleable.Orientation_strokeGdOrientation, 6)) {
+                when (textViewAttrs.getInt(R.styleable.UiTextView_strokeGdOrientation, 6)) {
                     0 -> GradientOrientation.TOP_TO_BOTTOM
                     1 -> GradientOrientation.TR_BL
                     2 -> GradientOrientation.RIGHT_TO_LEFT
@@ -157,22 +156,15 @@ class UiTextView @JvmOverloads constructor(
                     7 -> GradientOrientation.TL_BR
                     else -> GradientOrientation.TOP_TO_BOTTOM
                 }
-            orientationData.recycle()
-
-            typedArray.recycle()
             if (isGradient) {
                 updateGradient()
             } else {
                 updateBackground()
             }
 
-            val orientation = context.obtainStyledAttributes(attrs, R.styleable.Orientation)
+
             textGradientOrientation =
-                orientation.getInt(R.styleable.Orientation_textGdOrientation, 0)
-            orientation.recycle()
-
-
-            val textViewAttrs = context.obtainStyledAttributes(attrs, R.styleable.UiTextView)
+                textViewAttrs.getInt(R.styleable.UiTextView_textGdOrientation, 0)
             tColorDark =
                 textViewAttrs.getColor(R.styleable.UiTextView_tvColorDark, currentTextColor)
             tColorLight =
@@ -311,11 +303,8 @@ class UiTextView @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode()) stColorDark else stColorLight
             }
-            val rectF = RectF(
-                this@UiTextView.stWidth / 2,
-                this@UiTextView.stWidth / 2,
-                width.toFloat() - this@UiTextView.stWidth / 2,
-                height.toFloat() - this@UiTextView.stWidth / 2
+            mBorderRectF = RectF(
+                0f,0f,width.toFloat(),height.toFloat()
             )
             canvas.drawRoundRectPath(
                 mBorderRectF,

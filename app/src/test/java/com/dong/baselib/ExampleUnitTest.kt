@@ -1,4 +1,4 @@
-package com.dong.baselibrary
+package com.dong.baselib
 
 import org.junit.Test
 

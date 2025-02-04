@@ -21,7 +21,6 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
 import com.dong.baselib.R
-import com.dong.baselib.base.GradientOrientation
 import com.dong.baselib.canvas.drawRoundRectPath
 
 @SuppressLint("CustomViewStyleable")
@@ -259,11 +258,8 @@ class UiConstraintLayout @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode) stColorDark else stColorLight
             }
-            val rectF = RectF(
-                this@UiConstraintLayout.stWidth / 2,
-                this@UiConstraintLayout.stWidth / 2,
-                width.toFloat() - this@UiConstraintLayout.stWidth / 2,
-                height.toFloat() - this@UiConstraintLayout.stWidth / 2
+            mBorderRectF = RectF(
+                0f,0f,width.toFloat(),height.toFloat()
             )
             canvas.drawRoundRectPath(
                 mBorderRectF,
@@ -292,7 +288,7 @@ class UiConstraintLayout @JvmOverloads constructor(
                 mBorderRectF.right.toInt(),
                 mBorderRectF.bottom.toInt()
             )
-            val minSize = minOf(mBorderRectF.width(),mBorderRectF.height())
+            val minSize = minOf(mBorderRectF.width()/2,mBorderRectF.height()/2)
             val conner = if(cornerRadius>minSize) minSize else cornerRadius
             outline.setRoundRect(mBorderRect, conner)
         }

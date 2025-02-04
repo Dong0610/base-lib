@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.dong.baselib.base
+package com.dong.baselib.widget
 
 import android.app.Activity
 import android.content.Context
