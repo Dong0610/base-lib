@@ -303,11 +303,8 @@ class UiTextView @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode()) stColorDark else stColorLight
             }
-            val rectF = RectF(
-                this@UiTextView.stWidth / 2,
-                this@UiTextView.stWidth / 2,
-                width.toFloat() - this@UiTextView.stWidth / 2,
-                height.toFloat() - this@UiTextView.stWidth / 2
+            mBorderRectF = RectF(
+                0f,0f,width.toFloat(),height.toFloat()
             )
             canvas.drawRoundRectPath(
                 mBorderRectF,

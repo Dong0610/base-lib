@@ -17,9 +17,11 @@ import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
@@ -157,6 +159,9 @@ class RoundImageView @JvmOverloads constructor(
             addView(imageView)
             setClipContent(true)
             setWillNotDraw(false)
+            val param1= LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT)
+            param1.setMargins(0,0,0,0)
+            roundBorder.layoutParams=param1
             roundBorder.setBgColor(transparent, transparent)
             roundBorder.setStrokeWidth(stWidth.toInt())
             roundBorder.setCornerRadius(radius = cornerRadius)

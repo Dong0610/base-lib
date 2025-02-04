@@ -260,10 +260,7 @@ class UiLinearLayout @JvmOverloads constructor(
                 paint.color = if (isDarkMode) stColorDark else stColorLight
             }
             mBorderRectF = RectF(
-                this@UiLinearLayout.stWidth / 2,
-                this@UiLinearLayout.stWidth / 2,
-                width.toFloat() - this@UiLinearLayout.stWidth / 2,
-                height.toFloat() - this@UiLinearLayout.stWidth / 2
+                0f,0f,width.toFloat(),height.toFloat()
             )
             canvas.drawRoundRectPath(
                 mBorderRectF,

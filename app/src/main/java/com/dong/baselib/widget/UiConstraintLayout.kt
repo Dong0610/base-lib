@@ -258,7 +258,9 @@ class UiConstraintLayout @JvmOverloads constructor(
             } else {
                 paint.color = if (isDarkMode) stColorDark else stColorLight
             }
-
+            mBorderRectF = RectF(
+                0f,0f,width.toFloat(),height.toFloat()
+            )
             canvas.drawRoundRectPath(
                 mBorderRectF,
                 cornerRadius * 1.2f,
