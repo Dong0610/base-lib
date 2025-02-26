@@ -262,9 +262,11 @@ class UiLinearLayout @JvmOverloads constructor(
             mBorderRectF = RectF(
                 0f,0f,width.toFloat(),height.toFloat()
             )
+            val minSize = minOf(mBorderRectF.width()/2,mBorderRectF.height()/2)
+            val conner = if(cornerRadius>minSize) minSize else cornerRadius
             canvas.drawRoundRectPath(
                 mBorderRectF,
-                cornerRadius * 1.2f,
+                conner * 1.2f,
                 true,
                 true,
                 true,
