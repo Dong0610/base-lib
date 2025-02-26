@@ -1,4 +1,4 @@
-package com.dong.baselib.widget
+package com.dong.baselib.widget.view
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -11,6 +11,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import com.dong.baselib.R
+import com.dong.baselib.widget.fromColor
 
 class RippleBackground @JvmOverloads constructor(
     context: Context,

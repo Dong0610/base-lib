@@ -1,9 +1,10 @@
-package  com.dong.baselib.widget
+package  com.dong.baselib.widget.view
 
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.DashPathEffect
 import android.graphics.LinearGradient
 import android.graphics.Outline
 import android.graphics.Paint
@@ -19,7 +20,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatTextView
 import com.dong.baselib.R
-import com.dong.baselib.canvas.drawRoundRectPath
+import com.dong.baselib.widget.GradientOrientation
+import com.dong.baselib.widget.fromColor
+import com.dong.baselib.widget.isValidHexColor
+import kotlin.math.min
 
 enum class TextGradientOrientation {
     TOP_TO_BOTTOM,
@@ -96,6 +100,8 @@ class UiTextView @JvmOverloads constructor(
         return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 
+    private var isDistance = false
+    private var distanceSpace = 10f
     private var strokeGradientOrientation = GradientOrientation.LEFT_TO_RIGHT
     private var strokeGradient: IntArray? = null
 
@@ -111,7 +117,8 @@ class UiTextView @JvmOverloads constructor(
             stWidth = textViewAttrs.getDimension(R.styleable.UiTextView_strokeWidth, 0f)
             stColorDark = textViewAttrs.getColor(R.styleable.UiTextView_stColorDark, Color.BLACK)
             stColorLight = textViewAttrs.getColor(R.styleable.UiTextView_stColorLight, Color.BLACK)
-            bgColorDark = textViewAttrs.getColor(R.styleable.UiTextView_bgColorDark, Color.TRANSPARENT)
+            bgColorDark =
+                textViewAttrs.getColor(R.styleable.UiTextView_bgColorDark, Color.TRANSPARENT)
             bgColorLight =
                 textViewAttrs.getColor(R.styleable.UiTextView_bgColorLight, Color.TRANSPARENT)
             bgGradientStart =
@@ -176,7 +183,8 @@ class UiTextView @JvmOverloads constructor(
                 textViewAttrs.getColor(R.styleable.UiTextView_textGradientStart, Color.TRANSPARENT)
             textGradientEnd =
                 textViewAttrs.getColor(R.styleable.UiTextView_textGradientEnd, Color.TRANSPARENT)
-
+            isDistance = textViewAttrs.getBoolean(R.styleable.UiTextView_strokeDistance, false)
+            distanceSpace = textViewAttrs.getDimension(R.styleable.UiTextView_distanceSpace, 10f)
             textGradient = textViewAttrs.getBoolean(
                 R.styleable.UiTextView_textGradient,
                 this@UiTextView.textGradient
@@ -241,7 +249,6 @@ class UiTextView @JvmOverloads constructor(
     }
 
     private fun updateBackground() {
-        val strokeColor = if (isDarkMode()) stColorDark else stColorLight
         val backgroundColor = if (isDarkMode()) bgColorDark else bgColorLight
 
         val backgroundDrawable = GradientDrawable().apply {
@@ -251,6 +258,15 @@ class UiTextView @JvmOverloads constructor(
         background = backgroundDrawable
     }
 
+    fun setBgGradient(sColor:Int, eColor:Int,cColor:Int?=null) {
+        bgGradientStart = sColor
+        cColor?.let {
+            bgGradientCenter = cColor
+        }
+        bgGradientEnd = eColor
+        isGradient = true
+        updateGradient()
+    }
     private fun applyTextGradient() {
         val gradientOrientation = when (textGradientOrientation) {
             0 -> TextGradientOrientation.TOP_TO_BOTTOM
@@ -271,50 +287,54 @@ class UiTextView @JvmOverloads constructor(
         super.dispatchDraw(canvas) // Draws child views first
 
         if (stWidth > 0) {
-
-
             val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 style = Paint.Style.STROKE
                 strokeWidth = this@UiTextView.stWidth
-            }
-            if (strokeGradient != null) {
-                if (strokeGradient!!.size > 1) {
-                    val (x0, y0, x1, y1) = when (strokeGradientOrientation) {
-                        GradientOrientation.TOP_TO_BOTTOM -> arrayOf(0f, 0f, 0f, height)
-                        GradientOrientation.BOTTOM_TO_TOP -> arrayOf(0f, height, 0f, 0f)
-                        GradientOrientation.LEFT_TO_RIGHT -> arrayOf(0f, 0f, width, 0f)
-                        GradientOrientation.RIGHT_TO_LEFT -> arrayOf(width, 0f, 0f, 0f)
-                        GradientOrientation.TL_BR -> arrayOf(0f, 0f, width, height)
-                        GradientOrientation.TR_BL -> arrayOf(width, 0f, 0f, height)
-                        GradientOrientation.BL_TR -> arrayOf(0f, height, width, 0f)
-                        GradientOrientation.BR_TL -> arrayOf(width, height, 0f, 0f)
-                    }
-
-                    val gradient = LinearGradient(
-                        x0.toFloat(), y0.toFloat(), x1.toFloat(), y1.toFloat(),
-                        strokeGradient!!,
-                        null,
-                        Shader.TileMode.CLAMP
+                isAntiAlias = true
+                isDither = true
+                strokeJoin = Paint.Join.ROUND
+                if (isDistance) {
+                    pathEffect = DashPathEffect(
+                        floatArrayOf(
+                            distanceSpace, distanceSpace
+                        ), 0f
                     )
-                    paint.shader = gradient
-                } else {
-                    paint.color = if (isDarkMode()) stColorDark else stColorLight
                 }
+            }
+
+            if (strokeGradient != null && strokeGradient!!.size > 1) {
+                val (x0, y0, x1, y1) = when (strokeGradientOrientation) {
+                    GradientOrientation.TOP_TO_BOTTOM -> arrayOf(0f, 0f, 0f, height.toFloat())
+                    GradientOrientation.BOTTOM_TO_TOP -> arrayOf(0f, height.toFloat(), 0f, 0f)
+                    GradientOrientation.LEFT_TO_RIGHT -> arrayOf(0f, 0f, width.toFloat(), 0f)
+                    GradientOrientation.RIGHT_TO_LEFT -> arrayOf(width.toFloat(), 0f, 0f, 0f)
+                    GradientOrientation.TL_BR -> arrayOf(0f, 0f, width.toFloat(), height.toFloat())
+                    GradientOrientation.TR_BL -> arrayOf(width.toFloat(), 0f, 0f, height.toFloat())
+                    GradientOrientation.BL_TR -> arrayOf(0f, height.toFloat(), width.toFloat(), 0f)
+                    GradientOrientation.BR_TL -> arrayOf(width.toFloat(), height.toFloat(), 0f, 0f)
+                }
+
+                val gradient = LinearGradient(
+                    x0, y0, x1, y1,
+                    strokeGradient!!,
+                    null,
+                    Shader.TileMode.CLAMP
+                )
+                paint.shader = gradient
             } else {
                 paint.color = if (isDarkMode()) stColorDark else stColorLight
             }
+
+            val inset = stWidth / 2 // Ensure stroke is inside the bounds
             mBorderRectF = RectF(
-                0f,0f,width.toFloat(),height.toFloat()
+                inset, inset, width.toFloat() - inset, height.toFloat() - inset
             )
-            canvas.drawRoundRectPath(
-                mBorderRectF,
-                cornerRadius * 1.2f,
-                true,
-                true,
-                true,
-                true,
-                paint
-            )
+
+            val minSize = minOf(mBorderRectF.width() / 2, mBorderRectF.height() / 2)
+            val corner = min(cornerRadius, minSize) // Ensure corner doesn't exceed view bounds
+
+            canvas.drawRoundRect(mBorderRectF, corner, corner, paint)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 outlineProvider = OutlineProvider()
                 clipToOutline = true
@@ -334,8 +354,8 @@ class UiTextView @JvmOverloads constructor(
                 mBorderRectF.bottom.toInt()
             )
 
-            val minSize = minOf(mBorderRectF.width(),mBorderRectF.height())
-            val conner = if(cornerRadius>minSize) minSize else cornerRadius
+            val minSize = minOf(mBorderRectF.width(), mBorderRectF.height())
+            val conner = if (cornerRadius > minSize) minSize else cornerRadius
             outline.setRoundRect(mBorderRect, conner)
         }
     }

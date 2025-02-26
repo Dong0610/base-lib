@@ -1,4 +1,4 @@
-package  com.dong.baselib.widget
+package  com.dong.baselib.widget.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,6 +11,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.dong.baselib.widget.gdEnd
+import com.dong.baselib.widget.gdStart
 
 class DotIndicatorView @JvmOverloads constructor(
     context: Context,
