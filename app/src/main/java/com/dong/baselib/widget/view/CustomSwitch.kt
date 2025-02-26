@@ -1,4 +1,4 @@
-package  com.dong.baselib.widget
+package  com.dong.baselib.widget.view
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import  com.dong.baselib.R
+import com.dong.baselib.listener.OnStateChangeListener
 
 
 class CustomSwitch @JvmOverloads constructor(
@@ -143,9 +144,7 @@ class CustomSwitch @JvmOverloads constructor(
 
     private var onStateChangeListener: OnStateChangeListener? = null
 
-    interface OnStateChangeListener {
-        fun onStateChanged(state: Boolean)
-    }
+
 
     fun onStateChangeListener(state: OnStateChangeListener) {
         this.onStateChangeListener = state

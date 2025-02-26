@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="SVGImageView">
         <attr name="svg" format="reference|string" />
         <attr name="css" format="string" />
@@ -14,9 +13,25 @@
     </declare-styleable>
 
 
+    <declare-styleable name="RatingBar">
+        <attr name="maxRating" format="integer" />
+        <attr name="emptyStarDrawable" format="reference" />
+        <attr name="filledStarDrawable" format="reference" />
+        <attr name="emptyLastStarDrawable" format="reference" />
+        <attr name="filledLastStarDrawable" format="reference" />
+        <attr name="starSpacing" format="dimension" />
+        <attr name="defaultRate" format="integer" />
+    </declare-styleable>
 
-
-
+    <declare-styleable name="IndicatorView">
+        <attr name="max_count" format="integer" />
+        <attr name="spacing" format="dimension" />
+        <attr name="radius" format="dimension" />
+        <attr name="active_color" format="color" />
+        <attr name="default_color" format="color" />
+        <attr name="active_count" format="integer" />
+        <attr name="scale_value" format="integer" />
+    </declare-styleable>
     <declare-styleable name="BaseView">
         <attr name="cornerRadius" format="dimension" />
         <attr name="strokeWidth" format="dimension" />
@@ -28,7 +43,9 @@
         <attr name="bgGradientCenter" format="color|reference" />
         <attr name="bgGradientEnd" format="color|reference" />
         <attr name="clipContent" format="boolean" />
-        <attr name="strokeGradient" format="string"/>
+        <attr name="strokeGradient" format="string" />
+        <attr name="strokeDistance" format="boolean" />
+        <attr name="distanceSpace" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="StyleView">
@@ -43,10 +60,38 @@
         <attr name="bgGradientEnd" />
         <attr name="clipContent" />
         <attr name="strokeGradient" />
-        <attr name="textGdOrientation"/>
-        <attr name="bgGdOrientation"/>
-        <attr name="strokeGdOrientation"/>
+        <attr name="textGdOrientation" />
+        <attr name="bgGdOrientation" />
+        <attr name="strokeGdOrientation" />
+        <attr name="strokeDistance" />
+        <attr name="distanceSpace" />
+    </declare-styleable>
 
+    <declare-styleable name="FlexView">
+        <attr name="cornerRadius" />
+        <attr name="strokeWidth" />
+        <attr name="stColorDark" />
+        <attr name="stColorLight" />
+        <attr name="bgColorDark" />
+        <attr name="bgColorLight" />
+        <attr name="bgGradientStart" />
+        <attr name="bgGradientCenter" />
+        <attr name="bgGradientEnd" />
+        <attr name="clipContent" />
+        <attr name="strokeGradient" />
+        <attr name="textGdOrientation" />
+        <attr name="bgGdOrientation" />
+        <attr name="strokeGdOrientation" />
+        <attr name="strokeDistance" />
+        <attr name="distanceSpace" />
+        <attr name="justifyContent" format="integer">
+            <enum name="flex_start" value="0" />
+            <enum name="center" value="1" />
+            <enum name="flex_end" value="2" />
+            <enum name="space_between" value="3" />
+            <enum name="space_around" value="4" />
+            <enum name="space_evenly" value="5" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="RoundImageView">
@@ -61,13 +106,16 @@
         <attr name="bgGradientEnd" />
         <attr name="clipContent" />
         <attr name="strokeGradient" />
-        <attr name="textGdOrientation"/>
-        <attr name="bgGdOrientation"/>
-        <attr name="strokeGdOrientation"/>
+        <attr name="textGdOrientation" />
+        <attr name="strokeDistance" />
+        <attr name="distanceSpace" />
+        <attr name="bgGdOrientation" />
+        <attr name="strokeGdOrientation" />
         <attr name="ri_src" format="integer" />
         <attr name="android:src" format="integer|reference" />
         <attr name="android:padding" format="reference|dimension" />
-        <attr name="android:adjustViewBounds" format="boolean"/>
+        <attr name="android:adjustViewBounds" format="boolean" />
+
         <attr name="ri_scaleType">
             <enum name="matrix" value="0" />
             <enum name="fitXY" value="1" />
@@ -79,16 +127,6 @@
             <enum name="centerInside" value="7" />
         </attr>
     </declare-styleable>
-
-
-
-
-
-
-
-
-
-
 
 
     <declare-styleable name="Orientation">
@@ -136,9 +174,9 @@
         <attr name="bgGradientEnd" />
         <attr name="clipContent" />
         <attr name="strokeGradient" />
-        <attr name="textGdOrientation"/>
-        <attr name="bgGdOrientation"/>
-        <attr name="strokeGdOrientation"/>
+        <attr name="textGdOrientation" />
+        <attr name="bgGdOrientation" />
+        <attr name="strokeGdOrientation" />
         <attr name="tvColor" format="color|reference" />
         <attr name="tvColorDark" format="color|reference" />
         <attr name="tvColorLight" format="color|reference" />
@@ -147,11 +185,9 @@
         <attr name="textGradientStart" format="color|reference" />
         <attr name="textGradientEnd" format="color|reference" />
         <attr name="textGradient" format="boolean" />
+        <attr name="strokeDistance" />
+        <attr name="distanceSpace" />
     </declare-styleable>
-
-
-
-
     <declare-styleable name="StickerView">
         <attr name="showIcons" format="boolean" />
         <attr name="showBorder" format="boolean" />
@@ -179,10 +215,7 @@
         </attr>
         <attr name="ida_maxLength" format="integer" />
     </declare-styleable>
-
     <attr name="radiusView" format="float" />
-
-
     <declare-styleable name="IndicatorDotView">
         <attr name="dotRadius" format="dimension" />
         <attr name="dotColor" format="color" />
@@ -246,10 +279,10 @@
     </declare-styleable>
 
     <declare-styleable name="GradientSwitch">
-        <attr name="trackColorOff" format="string"/>
-        <attr name="trackColorOn" format="string"/>
-        <attr name="thumbColorOff" format="string"/>
-        <attr name="thumbColorOn" format="string"/>
-        <attr name="gd_stateTrack" format="boolean"/>
+        <attr name="trackColorOff" format="string" />
+        <attr name="trackColorOn" format="string" />
+        <attr name="thumbColorOff" format="string" />
+        <attr name="thumbColorOn" format="string" />
+        <attr name="gd_stateTrack" format="boolean" />
     </declare-styleable>
 </resources>

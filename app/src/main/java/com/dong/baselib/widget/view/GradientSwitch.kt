@@ -1,4 +1,4 @@
-package com.dong.baselib.widget
+package com.dong.baselib.widget.view
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
@@ -15,6 +15,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.dong.baselib.R
+import com.dong.baselib.listener.OnStateChangeListener
 
 
 class GradientSwitch @JvmOverloads constructor(
@@ -25,7 +26,7 @@ class GradientSwitch @JvmOverloads constructor(
 
     private var trackColorOff: IntArray = intArrayOf(fromColor("#7F7F7F"), fromColor("#7F7F7F"))
     private var thumbColorOff: IntArray = intArrayOf(fromColor("#FFFFFF"), fromColor("#FFFFFF"))
-    private var trackColorOn: IntArray = intArrayOf(fromColor("#FFFFFF"), fromColor("#FFFFFF"))
+    private var trackColorOn: IntArray = intArrayOf(fromColor("#FF6100"), fromColor("#FF6100"))
     private var thumbColorOn: IntArray = intArrayOf(fromColor("#FFFFFF"), fromColor("#FFFFFF"))
     private var stateTrack: Boolean = false
 
@@ -171,6 +172,7 @@ class GradientSwitch @JvmOverloads constructor(
             start()
         }
         stateTrack = !stateTrack
+        onStateChangeListener?.onStateChanged(stateTrack) // Call listener if provided
         updateColors() // Update colors after the toggle
     }
 
@@ -197,7 +199,14 @@ class GradientSwitch @JvmOverloads constructor(
     private fun fromColor(colorString: String): Int {
         return Color.parseColor(colorString)
     }
+    private var onStateChangeListener: OnStateChangeListener? = null
 
+
+
+    fun onStateChangeListener(state: OnStateChangeListener) {
+        this.onStateChangeListener = state
+        invalidate()
+    }
     // Utility function to validate if a string is a valid hex color
     private fun String.isValidHexColor(): Boolean {
         return this.matches("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$".toRegex())

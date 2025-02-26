@@ -1,4 +1,4 @@
-package  com.dong.baselib.widget;
+package  com.dong.baselib.widget.view;
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

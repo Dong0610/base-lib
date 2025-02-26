@@ -248,6 +248,85 @@ fun View.invisible() {
     this.visibility = View.INVISIBLE
 }
 
+fun <T> View.showStateGone(mutableLiveData: MutableLiveData<T>, lifecycleOwner: LifecycleOwner) {
+    mutableLiveData.observe(lifecycleOwner) { isVisible ->
+        if (isVisible == null) {
+            this.visibility = View.GONE
+        } else {
+            if (isVisible is Boolean) {
+                this.visibility = if (isVisible) View.VISIBLE else View.GONE
+            } else {
+                this.visibility = View.VISIBLE
+            }
+        }
+    }
+}
+
+fun <T> View.showStateInvisible(
+    mutableLiveData: MutableLiveData<T>,
+    lifecycleOwner: LifecycleOwner
+) {
+    mutableLiveData.observe(lifecycleOwner) { isVisible ->
+        if (isVisible == null) {
+            this.visibility = View.INVISIBLE
+        } else {
+            if (isVisible is Boolean) {
+                this.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            } else {
+                this.visibility = View.VISIBLE
+            }
+        }
+    }
+}
+
+fun <T> View.showStateGone(mutableLiveData: MutableLiveData<T>) {
+    mutableLiveData.observeForever { isVisible ->
+        if (isVisible == null) {
+            this.visibility = View.GONE
+        } else {
+            if (isVisible is Boolean) {
+                this.visibility = if (isVisible) View.VISIBLE else View.GONE
+            } else {
+                this.visibility = View.VISIBLE
+            }
+        }
+    }
+}
+
+fun <T> View.showStateInvisible(mutableLiveData: MutableLiveData<T>) {
+    mutableLiveData.observeForever { isVisible ->
+        if (isVisible == null) {
+            this.visibility = View.INVISIBLE
+        } else {
+            if (isVisible is Boolean) {
+                this.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            } else {
+                this.visibility = View.VISIBLE
+            }
+        }
+    }
+}
+
+fun <T> View.showStateGone(isVisible: Boolean) {
+    this.visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
+fun <T> View.showStateInvisible(isVisible: Boolean) {
+    this.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+}
+
+inline fun <T> List<T>.moveItemToPosition(position: Int, predicate: (T) -> Boolean): List<T> {
+    for (element in this.withIndex()) {
+        if (predicate(element.value)) {
+            return this.toMutableList().apply {
+                removeAt(element.index)
+                add(position - 1, element.value)
+            }.toList()
+        }
+    }
+    return this
+}
+
 
 @SuppressLint("DefaultLocale")
 fun convertMillieToHhMmSs(millis: Long): String {
@@ -300,7 +379,6 @@ fun ImageView.imageBitmap(): Bitmap? {
 }
 
 
-
 enum class GradientOrientation {
     TOP_TO_BOTTOM,
     TR_BL,
@@ -335,6 +413,7 @@ fun ImageView.gradientIcon(
             drawable.draw(canvas)
             bitmap
         }
+
         else -> throw IllegalArgumentException("Unsupported drawable type")
     }
 
@@ -350,30 +429,37 @@ fun ImageView.gradientIcon(
             0f, 0f, 0f, height.toFloat(),
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.BOTTOM_TO_TOP -> LinearGradient(
             0f, height.toFloat(), 0f, 0f,
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.LEFT_TO_RIGHT -> LinearGradient(
             0f, 0f, width.toFloat(), 0f,
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.RIGHT_TO_LEFT -> LinearGradient(
             width.toFloat(), 0f, 0f, 0f,
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.TL_BR -> LinearGradient(  // Top-left to bottom-right
             0f, 0f, width.toFloat(), height.toFloat(),
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.TR_BL -> LinearGradient(  // Top-right to bottom-left
             width.toFloat(), 0f, 0f, height.toFloat(),
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.BL_TR -> LinearGradient(  // Bottom-left to top-right
             0f, height.toFloat(), width.toFloat(), 0f,
             colors, null, Shader.TileMode.CLAMP
         )
+
         GradientOrientation.BR_TL -> LinearGradient(  // Bottom-right to top-left
             width.toFloat(), height.toFloat(), 0f, 0f,
             colors, null, Shader.TileMode.CLAMP
@@ -388,25 +474,42 @@ fun ImageView.gradientIcon(
 }
 
 
+fun View.rotateViewByTime(
+    fromDegree: Float = 0f,
+    toDegree: Float = 360f,
+    duration: Long = 3000,
+    isLoop: Boolean = false
+) {
+    val rotation = ObjectAnimator.ofFloat(this, "rotation", fromDegree, toDegree)
+    rotation.duration = duration // Set the duration of the animation
+    if (isLoop) {
+        rotation.repeatCount = ObjectAnimator.INFINITE
+        rotation.repeatMode = ObjectAnimator.RESTART  // Optionally set the mode to restart the animation after each cycle
+    }
+    rotation.start() // Start the animation
+}
+
+
+
 fun ViewGroup.swapChildren(index1: Int, index2: Int) {
-    
+
     if (index1 < 0 || index1 >= this.childCount || index2 < 0 || index2 >= this.childCount) {
-        return  
+        return
     }
 
-    
+
     val view1 = getChildAt(index1)
     val view2 = getChildAt(index2)
 
-    
-    this.removeViewAt(index1)
-    this.removeViewAt(index2 - 1)  
 
-    
+    this.removeViewAt(index1)
+    this.removeViewAt(index2 - 1)
+
+
     this.addView(view1, index2)
     this.addView(view2, index1)
 
-    
+
     this.requestLayout()
     this.invalidate()
 }
